@@ -467,6 +467,44 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Thêm CSS cho lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .lightbox.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Cập nhật style cho gallery-item */
+        .gallery-item {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -592,6 +630,10 @@
         </div>
     </div>
 
+    <div class="lightbox" onclick="closeLightbox()">
+        <img src="" alt="Enlarged memory" id="lightbox-img">
+    </div>
+
     <script>
         // Tính số ngày yêu
         function updateDaysCount() {
@@ -655,6 +697,39 @@
                 gallerySection.classList.add('visible');
             }, 500);
         }
+
+        // Thêm functions cho lightbox
+        function openLightbox(imgSrc) {
+            const lightbox = document.querySelector('.lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imgSrc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Ngăn scroll khi xem ảnh
+        }
+
+        function closeLightbox() {
+            const lightbox = document.querySelector('.lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = ''; // Cho phép scroll lại
+        }
+
+        // Thêm sự kiện click cho tất cả gallery items
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const imgSrc = this.querySelector('img').src;
+                    openLightbox(imgSrc);
+                });
+            });
+
+            // Thêm sự kiện phím ESC để đóng lightbox
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                }
+            });
+        });
     </script>
 </body>
 </html> 
