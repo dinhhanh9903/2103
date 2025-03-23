@@ -454,17 +454,51 @@
             .gallery-row {
                 grid-template-columns: repeat(3, 1fr);
             }
+            
+            .gallery-item img {
+                height: 180px;
+            }
         }
 
         @media (max-width: 768px) {
             .gallery-row {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .gallery-item img {
+                height: 160px;
+            }
+
+            .gallery-section {
+                padding: 40px 15px;
+            }
+
+            .gallery-container {
+                padding: 10px;
+            }
+
+            .gallery-title {
+                font-size: 2rem;
+                margin-bottom: 30px;
             }
         }
 
         @media (max-width: 480px) {
             .gallery-row {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .gallery-item img {
+                height: 130px;
+            }
+
+            .gallery-title {
+                font-size: 1.8rem;
+                margin-bottom: 25px;
             }
         }
 
