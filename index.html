@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhập Mật Khẩu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .password-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .pokemon-image {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        .display {
+            width: 100%;
+            height: 40px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+            font-size: 24px;
+            letter-spacing: 8px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            -webkit-text-security: disc;
+        }
+
+        .message {
+            text-align: center;
+            color: #ff4444;
+            margin-bottom: 15px;
+            min-height: 20px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .bottom-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: #ff9999;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background-color: #ff7777;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="password-box" id="passwordBox">
+        <img src="cute-love-swirl-around-cat-9c27zdppmrnmzx4c.gif" alt="Pokemon" class="pokemon-image">
+        <input type="password" class="display" readonly maxlength="4" id="passwordInput">
+        <div class="message" id="message"></div>
+        <div class="buttons">
+            <button onclick="addNumber('1')">1</button>
+            <button onclick="addNumber('2')">2</button>
+            <button onclick="addNumber('3')">3</button>
+            <button onclick="addNumber('4')">4</button>
+            <button onclick="addNumber('5')">5</button>
+            <button onclick="addNumber('6')">6</button>
+            <button onclick="addNumber('7')">7</button>
+            <button onclick="addNumber('8')">8</button>
+            <button onclick="addNumber('9')">9</button>
+        </div>
+        <div class="bottom-row">
+            <button onclick="addNumber('0')">0</button>
+            <button onclick="clearInput()">×</button>
+        </div>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById('passwordInput');
+        const messageDiv = document.getElementById('message');
+        const passwordBox = document.getElementById('passwordBox');
+        const correctPassword = '2103';
+        let attemptsLeft = 3;
+        let buttons = document.getElementsByTagName('button');
+        
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+
+        function addNumber(num) {
+            if (hiddenInput.value.length < 4) {
+                hiddenInput.value += num;
+                passwordInput.value = '*'.repeat(hiddenInput.value.length);
+                
+                if (hiddenInput.value.length === 4) {
+                    checkPassword();
+                }
+            }
+        }
+
+        function clearInput() {
+            hiddenInput.value = '';
+            passwordInput.value = '';
+            messageDiv.textContent = '';
+        }
+
+        function disableAllButtons() {
+            for (let button of buttons) {
+                button.disabled = true;
+            }
+        }
+
+        function checkPassword() {
+            if (hiddenInput.value === correctPassword) {
+                messageDiv.style.color = '#4CAF50';
+                messageDiv.textContent = 'Mật khẩu chính xác!';
+                setTimeout(() => {
+                    window.location.href = 'success.html';
+                }, 500);
+            } else {
+                attemptsLeft--;
+                passwordBox.classList.add('shake');
+                
+                setTimeout(() => {
+                    passwordBox.classList.remove('shake');
+                }, 500);
+
+                if (attemptsLeft > 0) {
+                    messageDiv.textContent = `Mật khẩu sai! Còn ${attemptsLeft} lần thử.`;
+                    hiddenInput.value = '';
+                    passwordInput.value = '';
+                } else {
+                    messageDiv.textContent = 'Bạn đã nhập sai quá nhiều lần. Vui lòng thử lại sau!';
+                    hiddenInput.value = '';
+                    passwordInput.value = '';
+                    disableAllButtons();
+                }
+            }
+        }
+    </script>
+</body>
+</html> 

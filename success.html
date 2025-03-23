@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đếm Ngày Yêu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #fff0f3;
+            font-family: 'Quicksand', sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 100px;
+        }
+
+        .title {
+            color: #ff758c;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(255, 117, 140, 0.3);
+            font-weight: 700;
+            text-align: center;
+            margin-top: -50px;
+            margin-bottom: 20px;
+        }
+
+        .love-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 40px;
+            margin-bottom: 20px;
+        }
+
+        .love-box {
+            text-align: center;
+            flex: 1;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.2);
+            margin-bottom: 15px;
+            object-fit: cover;
+            border: 3px solid #ff758c;
+        }
+
+        .love-text {
+            font-size: 1.4rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .heart-container {
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .heart {
+            color: #ff758c;
+            font-size: 3.5rem;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .days-count {
+            font-size: 3rem;
+            color: #ff758c;
+            font-weight: 700;
+        }
+
+        .days-text {
+            color: #ff758c;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        .timer {
+            display: flex;
+            gap: 15px;
+            font-size: 2.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.2);
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .timer span {
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .next-btn {
+            background: #ff758c;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 25px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.3);
+        }
+
+        .next-btn:hover {
+            transform: scale(1.05);
+            background: #ff576f;
+        }
+
+        @media (max-width: 768px) {
+            .love-container {
+                padding: 0 20px;
+            }
+
+            .avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .title {
+                font-size: 2.5rem;
+                margin-top: -30px;
+            }
+
+            .days-count {
+                font-size: 2.5rem;
+            }
+
+            .timer {
+                font-size: 2rem;
+                padding: 12px 25px;
+            }
+
+            .timer span {
+                min-width: 50px;
+            }
+
+            .container {
+                padding-bottom: 80px;
+            }
+        }
+
+        .about-section {
+            width: 100%;
+            min-height: 100vh;
+            padding: 40px 15px;
+            background-color: #ffe9ed;
+            position: relative;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            transform: translateY(50px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-section.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .about-title {
+            color: #ff758c;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(255, 117, 140, 0.3);
+        }
+
+        .about-container {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        .about-card {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.2);
+            transition: transform 0.3s ease;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .about-gif {
+            width: 100px;
+            height: 100px;
+            border-radius: 15px;
+            margin: 0 auto 20px;
+            display: block;
+            object-fit: cover;
+        }
+
+        .about-content h3 {
+            color: #ff758c;
+            font-size: 1.6rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .info-list li {
+            color: #666;
+            font-size: 1rem;
+            padding: 10px 0;
+            border-bottom: 1px dashed #ffd1d8;
+            transition: color 0.3s ease;
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-list li:hover {
+            color: #ff758c;
+        }
+
+        @media (max-width: 768px) {
+            .about-section {
+                padding: 30px 10px;
+            }
+
+            .about-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+                padding: 0 20px;
+            }
+
+            .about-card {
+                max-width: 320px;
+                width: 100%;
+            }
+            
+            .about-title {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+
+            .about-gif {
+                width: 80px;
+                height: 80px;
+            }
+
+            .about-content h3 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .info-list li {
+                font-size: 0.95rem;
+                padding: 8px 0;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .about-section {
+                padding: 20px 10px;
+            }
+
+            .about-title {
+                font-size: 1.8rem;
+            }
+
+            .about-card {
+                padding: 15px 12px;
+            }
+
+            .about-gif {
+                width: 70px;
+                height: 70px;
+            }
+
+            .about-content h3 {
+                font-size: 1.3rem;
+            }
+
+            .info-list li {
+                font-size: 0.9rem;
+                padding: 6px 0;
+            }
+        }
+
+        .scroll-btn-container {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .scroll-btn {
+            background: #ff758c;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.3);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-btn:hover {
+            transform: scale(1.1);
+            background: #ff576f;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        .gallery-section {
+            width: 100%;
+            min-height: 100vh;
+            padding: 60px 20px;
+            background-color: #fff5f7;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            transform: translateY(50px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-section.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .gallery-title {
+            color: #ff758c;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(255, 117, 140, 0.3);
+        }
+
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .gallery-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 1024px) {
+            .gallery-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Love Days</h1>
+
+        <div class="love-container">
+            <div class="love-box">
+                <img src="hh.jpg" alt="Love me" class="avatar">
+                <div class="love-text">Cá</div>
+            </div>
+
+            <div class="heart-container">
+                <div class="heart">❤️</div>
+                <div class="days-count">367</div>
+                <div class="days-text">Ngày rùi nè..</div>
+            </div>
+
+            <div class="love-box">
+                <img src="na.jpg" alt="Love you" class="avatar">
+                <div class="love-text">Muối</div>
+            </div>
+        </div>
+
+        <div class="timer">
+            <span id="hours">23</span> :
+            <span id="minutes">59</span> :
+            <span id="seconds">00</span>
+        </div>
+
+        <div class="scroll-btn-container">
+            <button class="scroll-btn" onclick="scrollToAbout()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="about-section" id="about">
+        <h2 class="about-title">About Us</h2>
+        <div class="about-container">
+            <div class="about-card">
+                <img src="tenor.gif" alt="Cute GIF" class="about-gif">
+                <div class="about-content">
+                    <h3>Hặn</h3>
+                    <ul class="info-list">
+                        <li>🎂 Sinh nhật: 09/09/2003</li>
+                        <li>💝 Biệt danh: Cá</li>
+                        <li>🏠 Quê quán: Nghệ An</li>
+                        <li>💫 Sở thích: Thích Muối</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="about-card">
+                <img src="cute.gif" alt="Cute GIF" class="about-gif">
+                <div class="about-content">
+                    <h3>Ắn</h3>
+                    <ul class="info-list">
+                        <li>🎂 Sinh nhật: 13/02/2005</li>
+                        <li>💝 Biệt danh: Muối</li>
+                        <li>🏠 Quê quán: Quốc Oai</li>
+                        <li>💫 Sở thích: Thích Cá</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-btn-container">
+            <button class="scroll-btn" onclick="scrollToGallery()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="gallery-section">
+        <h2 class="gallery-title">Our Memories</h2>
+        <div class="gallery-container">
+            <div class="gallery-row">
+                <div class="gallery-item">
+                    <img src="image1.jpg" alt="Memory 1">
+                </div>
+                <div class="gallery-item">
+                    <img src="image2.jpg" alt="Memory 2">
+                </div>
+                <div class="gallery-item">
+                    <img src="image3.jpg" alt="Memory 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="image4.jpg" alt="Memory 4">
+                </div>
+            </div>
+            <div class="gallery-row">
+                <div class="gallery-item">
+                    <img src="image5.jpg" alt="Memory 5">
+                </div>
+                <div class="gallery-item">
+                    <img src="image6.jpg" alt="Memory 6">
+                </div>
+                <div class="gallery-item">
+                    <img src="image7.jpg" alt="Memory 7">
+                </div>
+                <div class="gallery-item">
+                    <img src="image8.jpg" alt="Memory 8">
+                </div>
+            </div>
+            <div class="gallery-row">
+                <div class="gallery-item">
+                    <img src="image9.jpg" alt="Memory 9">
+                </div>
+                <div class="gallery-item">
+                    <img src="image10.jpg" alt="Memory 10">
+                </div>
+                <div class="gallery-item">
+                    <img src="image11.jpg" alt="Memory 11">
+                </div>
+                <div class="gallery-item">
+                    <img src="image12.jpg" alt="Memory 12">
+                </div>
+            </div>
+            <div class="gallery-row">
+                <div class="gallery-item">
+                    <img src="image13.jpg" alt="Memory 13">
+                </div>
+                <div class="gallery-item">
+                    <img src="image14.jpg" alt="Memory 14">
+                </div>
+                <div class="gallery-item">
+                    <img src="image15.jpg" alt="Memory 15">
+                </div>
+                <div class="gallery-item">
+                    <img src="image16.jpg" alt="Memory 16">
+                </div>
+            </div>
+            <div class="gallery-row">
+                <div class="gallery-item">
+                    <img src="image17.jpg" alt="Memory 17">
+                </div>
+                <div class="gallery-item">
+                    <img src="image18.jpg" alt="Memory 18">
+                </div>
+                <div class="gallery-item">
+                    <img src="image19.jpg" alt="Memory 19">
+                </div>
+                <div class="gallery-item">
+                    <img src="image20.jpg" alt="Memory 20">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tính số ngày yêu
+        function updateDaysCount() {
+            const startDate = new Date('2025-03-21'); // Thay đổi ngày bắt đầu yêu tại đây
+            const today = new Date();
+            const diffTime = Math.abs(today - startDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            document.querySelector('.days-count').textContent = diffDays;
+        }
+
+        // Cập nhật đồng hồ hiện tại
+        function updateTimer() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+
+        // Cập nhật mỗi giây
+        setInterval(updateTimer, 1000);
+        updateTimer();
+        updateDaysCount();
+
+        function scrollToAbout() {
+            const aboutSection = document.querySelector('.about-section');
+            aboutSection.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                aboutSection.classList.add('visible');
+            }, 500);
+        }
+
+        // Thêm hiệu ứng hiển thị khi scroll
+        window.addEventListener('scroll', function() {
+            const aboutSection = document.querySelector('.about-section');
+            const aboutPosition = aboutSection.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.3;
+
+            if(aboutPosition < screenPosition) {
+                aboutSection.classList.add('visible');
+            }
+        });
+
+        window.addEventListener('scroll', function() {
+            const gallerySection = document.querySelector('.gallery-section');
+            const galleryPosition = gallerySection.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.3;
+
+            if(galleryPosition < screenPosition) {
+                gallerySection.classList.add('visible');
+            }
+        });
+
+        function scrollToGallery() {
+            const gallerySection = document.querySelector('.gallery-section');
+            gallerySection.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                gallerySection.classList.add('visible');
+            }, 500);
+        }
+    </script>
+</body>
+</html> 
